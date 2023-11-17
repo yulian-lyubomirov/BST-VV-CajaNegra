@@ -760,5 +760,106 @@ public class Tests_bst {
         assertEquals("[1]",bst.getSubTree(bst.search(1)).toList().toString());
 
     }
+    @ParameterizedTest
+    @CsvSource(delimiter = '|',value={
+            "-2500|0|0",
+            "-2499|0|0",
+            "0|0|0",
+            "2498|0|0",
+            "2499|0|0",
+            "-2500|48|-1",
+            "-2499|48|-1",
+            "0|48|-1",
+            "2498|48|-1",
+            "2499|48|-1",
+            "-2500|49|-1",
+            "-2499|49|-1",
+            "0|49|-1",
+            "2498|49|-1",
+            "2499|49|-1",
+            "-2500|25|-1",
+            "-2499|25|-1",
+            "0|25|-1",
+            "2498|25|-1",
+            "2499|25|-1",
+            "-2500|49|-1",
+            "-2499|49|-1",
+            "0|49|-1",
+            "2498|49|-1",
+            "2499|49|-1",
+            "-2500|48|1",
+            "-2499|48|1",
+            "0|48|1",
+            "2498|48|1",
+            "2499|48|1",
+            "-2500|49|1",
+            "-2499|49|1",
+            "0|49|1",
+            "2498|49|1",
+            "2499|49|1",
+            "-2500|25|1",
+            "-2499|25|1",
+            "0|25|1",
+            "2498|25|1",
+            "2499|25|1",
+            "-2500|49|1",
+            "-2499|49|1",
+            "0|49|1",
+            "2498|49|1",
+            "2499|49|1",
 
+    })
+    void casosPruebaInsertIterativoValidos(int valor,int nivel,int sentido) throws DepthException {
+        for(int i=1;i<=nivel;i++){
+            bst.insert(i*sentido,false);
+        }
+        Node test = new  Node<>(valor);
+        bst.insert(valor,false);
+        assertTrue(bst.search(valor)!=null);
+    }
+    @ParameterizedTest
+    @CsvSource(delimiter='|',value={
+            "-2500|-1",
+            "-2499|-1",
+            "0|-1",
+            "2498|-1",
+            "2499|-1",
+            "-2500|1",
+            "-2499|1",
+            "0|1",
+            "2498|1",
+            "2499|1",
+
+
+    })
+    void casosPruebaInsertIterativoNoValidosDepth(int valor, int sentido)  throws DepthException{
+        for(int i=1;i<=50;i++){
+            bst.insert(i*sentido,false);
+        }
+        assertThrows(com.exceptions.DepthException.class, () -> {
+            bst.insert(valor, false); //deberia de dar error y no lo da para algunos valores
+        });
+    }
+
+    @ParameterizedTest
+    @CsvSource(delimiter='|',value={
+
+            "-2501|0|0",
+            "-2501|48|-1",
+            "-2501|49|-1",
+            "-2501|50|-1",
+            "2500|0|0",
+            "2500|48|1",
+            "2500|49|1",
+            "2500|48|50",
+
+    })
+    void casosPruebaInsertIterativoNoValidosIllegalArgument(int valor,int nivel,int sentido)  throws DepthException{
+        for(int i=1;i<=nivel;i++){
+            bst.insert(i*sentido,false);
+        }
+        assertThrows(java.lang.IllegalArgumentException.class, () -> {
+            bst.insert(valor, false); //deberia de dar error y no lo da para algunos valores
+        });
+    }
 }
